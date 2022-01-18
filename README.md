@@ -1,7 +1,12 @@
 # Data Visualization in Python with Dash
-This is the repository for the LinkedIn Learning course `Data Visualization in Python with Dash`. The full course is available from [LinkedIn Learning][lil-course-url].
+This is the repository for the LinkedIn Learning course Data Visualization in Python with Dash. The full course is available from [LinkedIn Learning][lil-course-url].
 
-_See the readme file in the main branch for updated instructions and information._
+![Data Visualization in Python with Dash][lil-thumbnail-url] 
+
+Data is everywhere. It’s fundamental to your business process. It allows you to make sound, well-informed decisions driven by evidence, not just conjecture. But how should you represent it? The answer depends, especially when you’re working with stakeholders who don’t have a technical background. That’s where Dash comes in. It’s a powerful and easy-to-use data visualization tool that can help you make optimal strategic decisions.
+
+In this course, instructor Robin Andrews gives you an overview of everything you need to know to get started using Dash with Python. Discover how to build powerful and attractive data visualizations. Learn about creating plots, styling applications, and adding user interactivity to cultivate more responsive, data-driven relationships. Robin explores strategies to help you get the most out of the Dash experience, and shows you how to deploy your Dash apps to the cloud using Heroku.
+
 ## Instructions
 This repository has branches for each of the videos in the course. You can use the branch pop up menu in github to switch to a specific branch and take a look at the course at that stage, or you can add `/tree/BRANCH_NAME` to the URL to go to the branch you want to access.
 
@@ -20,13 +25,16 @@ To resolve this issue:
     Add changes to git using this command: git add .
 	Commit changes using this command: git commit -m "some message"
 
-## Installing
-1. To use these exercise files, you must have the following installed:
-	- Python 3
-2. Clone this repository into your local machine using the terminal (Mac), CMD (Windows), or a GUI tool like SourceTree.
 
-[0]: # (Replace these placeholder URLs with actual course URLs)
+### Instructor
 
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: http://
+Robin Andrews 
+                            
 
+
+                            
+
+Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learning/instructors/robin-andrews).
+
+[lil-course-url]: https://www.linkedin.com/learning/data-visualization-in-python-with-dash
+[lil-thumbnail-url]: https://cdn.lynda.com/course/3009706/3009706-1641928938214-16x9.jpg
