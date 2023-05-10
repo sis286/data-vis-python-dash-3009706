@@ -1,34 +1,17 @@
 import dash
-from dash import dcc
+from dash import dcc, Output, Input
 from dash import html
 import plotly.express as px
 import pandas as pd
 
 # Read in the data
-data = pd.read_csv("precious_metals_prices_2018_2021.csv", usecols=["DateTime", "Gold"])
-
-# Create a plotly plot for use by dcc.Graph().
-fig = px.line(
-    data,
-    title="Precious Metal Prices 2018-2021",
-    x="DateTime",
-    y=["Gold"],
-    color_discrete_map={"Gold": "gold"}
-)
-
-fig.update_layout(
-    template="plotly_dark",
-    xaxis_title="Date",
-    yaxis_title="Price (USD/oz)",
-    font=dict(
-        family="Verdana, sans-serif",
-        size=18,
-        color="white"
-    ),
-)
+data = pd.read_csv("precious_metals_prices_2018_2021.csv")
 
 app = dash.Dash(__name__)
 app.title = "Precious Metal Prices 2018-2021"
+
+metal_filter_id = 'metal-filter'
+price_chart_id = 'price-chart'
 
 app.layout = html.Div(
     id="app-container",
@@ -57,10 +40,11 @@ app.layout = html.Div(
                             children="Metal"
                         ),
                         dcc.Dropdown(
-                            id="metal-filter",
+                            id=metal_filter_id,
                             className="dropdown",
                             options=[{"label": metal, "value": metal} for metal in data.columns[1:]],
-                            clearable=False
+                            clearable=False,
+                            value='Silver',
                         )
                     ]
                 )
@@ -69,13 +53,48 @@ app.layout = html.Div(
         html.Div(
             id="graph-container",
             children=dcc.Graph(
-                id="price-chart",
-                figure=fig,
+                id=price_chart_id,
                 config={"displayModeBar": False}
             ),
         ),
     ]
 )
+
+
+@app.callback(
+    Output(price_chart_id, 'figure'),
+    Input(metal_filter_id, 'value')
+)
+def update_chart(metal: str):
+    fig = px.line(
+        data,
+        title="Precious Metal Prices 2018-2021",
+        x="DateTime",
+        y=[metal],
+        color_discrete_map={
+            "Gold": "gold",
+            'Silver': 'silver',
+            'Platinum': '#E5E4E2',
+            'Palladium': '#CED0DD',
+            'Rhodium': '#E2E7E1',
+            'Iridium': '#3D3C3A',
+            'Ruthenium': '#C9CBC8',
+        }
+    )
+
+    fig.update_layout(
+        template="plotly_dark",
+        xaxis_title="Date",
+        yaxis_title="Price (USD/oz)",
+        font=dict(
+            family="Verdana, sans-serif",
+            size=18,
+            color="white"
+        ),
+    )
+
+    return fig
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
