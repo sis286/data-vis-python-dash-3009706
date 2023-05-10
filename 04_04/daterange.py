@@ -1,3 +1,5 @@
+import datetime
+
 import dash
 from dash import dcc
 from dash import html
@@ -7,18 +9,12 @@ import pandas as pd
 
 # Read in the data
 data = pd.read_csv("precious_metals_prices_2018_2021.csv")
-
-# Create a plotly plot for use by dcc.Graph().
-fig = px.line(
-    data,
-    title="Precious Metal Prices 2018-2021",
-    x="DateTime",
-    y=["Gold"],
-    color_discrete_map={"Gold": "gold"}
-)
+data.DateTime = pd.to_datetime(data.DateTime, format='%Y-%m-%d %H:%M:%S')
 
 app = dash.Dash(__name__)
 app.title = "Precious Metal Prices 2018-2021"
+
+
 
 app.layout = html.Div(
     id="app-container",
@@ -54,6 +50,21 @@ app.layout = html.Div(
                             value="Gold"
                         )
                     ]
+                ),
+                html.Div(
+                    children=[
+                        html.Div(
+                            className='menu-title',
+                            children='Date Range',
+                        ),
+                        dcc.DatePickerRange(
+                            id='date-range',
+                            min_date_allowed=data.DateTime.min().date(),
+                            max_date_allowed=data.DateTime.max().date(),
+                            start_date=data.DateTime.min().date(),
+                            end_date=data.DateTime.max().date(),
+                        )
+                    ]
                 )
             ]
         ),
@@ -61,22 +72,22 @@ app.layout = html.Div(
             id="graph-container",
             children=dcc.Graph(
                 id="price-chart",
-                figure=fig,
                 config={"displayModeBar": False}
             ),
         ),
     ]
 )
-
-
 @app.callback(
     Output("price-chart", "figure"),
-    Input("metal-filter", "value")
+    Input("metal-filter", "value"),
+    Input('date-range', 'start_date'),
+    Input('date-range', 'end_date'),
 )
-def update_chart(metal):
+def update_chart(metal: str, start_date: datetime.date, end_date: datetime.date):
+    filtered_data = data.loc[(data.DateTime >= start_date) & (data.DateTime <= end_date)]
     # Create a plotly plot for use by dcc.Graph().
     fig = px.line(
-        data,
+        filtered_data,
         title="Precious Metal Prices 2018-2021",
         x="DateTime",
         y=[metal],
